@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0
+apiversion: 4
+architectures: arm64-v8a armeabi-v7a x86
+description: textfieldboxes
+author: Douglas Alves
+license: Specify your license
+copyright: Copyright (c) 2019 by Your Company
+
+# these should not be edited
+name: textfieldboxes
+moduleid: ti.android.textfieldboxes
+guid: 780836e6-2cce-4392-90f4-e45966eacfbb
+platform: android
+minsdk: 7.0.0.GA
