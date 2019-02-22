@@ -20,15 +20,31 @@ public class TextfieldboxesModule extends KrollModule
 	// Standard Debugging variables
 	private static final String LCAT = "TextfieldboxesModule";
 	private static final boolean DBG = TiConfig.LOGD;
+	private static final String ModuleName = "Textfieldboxes";
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
+	
+	@Kroll.constant
+    public static final int LIGHT_THEME = 1;
+	
+	@Kroll.constant
+    public static final int DARK_THEME = 2;
+	
+	@Kroll.constant
+    public static final String END_ICON_CLICK = "end_icon_click";
+	
+	@Kroll.constant
+    public static final String ICON_IMAGE_CLICK = "icon_image_click";
+	
+	@Kroll.constant
+    public static final String ON_TEXT_CHANGE = "on_text_change";
 
 	public TextfieldboxesModule()
 	{
 		super();
 	}
-
+	
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app)
 	{

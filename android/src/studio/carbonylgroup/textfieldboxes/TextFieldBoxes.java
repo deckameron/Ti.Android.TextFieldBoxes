@@ -30,7 +30,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.ExecutionException;
 
+import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 
@@ -39,9 +41,9 @@ import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
  * Text Field Boxes
  * Created by CarbonylGroup on 2017/08/25
  */
-@SuppressWarnings("unused")
 public class TextFieldBoxes extends FrameLayout {
 
+	private static final String LCAT = "TextFieldBoxes";
     /**
      * all the default colors to be used on light or dark themes.
      */
@@ -178,9 +180,11 @@ public class TextFieldBoxes extends FrameLayout {
     protected SimpleTextChangedWatcher textChangeListener;
     private ColorDrawable mPasswordToggleDummyDrawable;
     private Drawable mOriginalEditTextEndDrawable;
+    
+    private Context context;
+	private Resources resources;
 
     public TextFieldBoxes(Context context) {
-
         super(context);
         init();
     }
@@ -210,7 +214,7 @@ public class TextFieldBoxes extends FrameLayout {
 
         /* Get Default Error Color From Theme */
         try {
-			DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), TiRHelper.getResource("color.A400red"));
+			DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), TiRHelper.getApplicationResource("color.A400red"));
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -226,7 +230,7 @@ public class TextFieldBoxes extends FrameLayout {
 
         /* Get Default Primary Color From Theme */
         try {
-			themeArray = theme.obtainStyledAttributes(new int[]{TiRHelper.getResource("attr.colorPrimary")});
+			themeArray = theme.obtainStyledAttributes(new int[]{TiRHelper.getApplicationResource("attr.colorPrimary")});
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,7 +261,6 @@ public class TextFieldBoxes extends FrameLayout {
 
     @Override
     protected void onFinishInflate() {
-
         super.onFinishInflate();
         initViews();
         triggerSetters();
@@ -301,7 +304,7 @@ public class TextFieldBoxes extends FrameLayout {
                     .addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             try {
 				((RelativeLayout.LayoutParams) this.panel.getLayoutParams())
-				        .addRule(RelativeLayout.ABOVE, TiRHelper.getResource("id.text_field_boxes_bottom"));
+				        .addRule(RelativeLayout.ABOVE, TiRHelper.getApplicationResource("id.text_field_boxes_bottom"));
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -316,14 +319,14 @@ public class TextFieldBoxes extends FrameLayout {
 
             try {
 				((RelativeLayout.LayoutParams) this.bottomPart.getLayoutParams())
-				        .addRule(RelativeLayout.BELOW, TiRHelper.getResource("id.text_field_boxes_panel"));
+				        .addRule(RelativeLayout.BELOW, TiRHelper.getApplicationResource("id.text_field_boxes_panel"));
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
             try {
 				((RelativeLayout.LayoutParams) this.bottomLine.getLayoutParams())
-				        .addRule(RelativeLayout.BELOW, TiRHelper.getResource("id.text_field_boxes_upper_panel"));
+				        .addRule(RelativeLayout.BELOW, TiRHelper.getApplicationResource("id.text_field_boxes_upper_panel"));
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -352,7 +355,7 @@ public class TextFieldBoxes extends FrameLayout {
                 mPasswordToggleDummyDrawable = new ColorDrawable();
 
             try {
-				upperPanel.setPadding(getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.upper_panel_paddingStart")), 0, getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.upper_panel_paddingEnd_small")), 0);
+				upperPanel.setPadding(getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.upper_panel_paddingStart")), 0, getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.upper_panel_paddingEnd_small")), 0);
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -376,7 +379,7 @@ public class TextFieldBoxes extends FrameLayout {
         } else {
 
             try {
-				upperPanel.setPadding(getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.upper_panel_paddingStart")), 0, getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.upper_panel_paddingEnd")), 0);
+				upperPanel.setPadding(getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.upper_panel_paddingStart")), 0, getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.upper_panel_paddingEnd")), 0);
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -398,34 +401,34 @@ public class TextFieldBoxes extends FrameLayout {
         }
     }
 
-    private void initViews() {
+    public void initViews() {
 
         this.editText = findEditTextChild();
         if (editText == null) return;
         
         try {
-			this.addView(LayoutInflater.from(getContext()).inflate(TiRHelper.getResource("layout.text_field_boxes_layout"), this, false));
+			this.addView(LayoutInflater.from(getContext()).inflate(TiRHelper.getApplicationResource("layout.text_field_boxes_layout"), this, false));
 		
 			removeView(this.editText);
 
 	        this.editText.setBackgroundColor(Color.TRANSPARENT);
 	        this.editText.setDropDownBackgroundDrawable(new ColorDrawable(DEFAULT_FG_COLOR));
 	        this.editText.setMinimumWidth(10);
-	        this.inputLayout = (RelativeLayout) this.findViewById(TiRHelper.getResource("text_field_boxes_input_layout"));
-	        this.floatingLabel = (AppCompatTextView) findViewById(TiRHelper.getResource("id.text_field_boxes_label"));
-	        this.panel = findViewById(TiRHelper.getResource("id.text_field_boxes_panel"));
-	        this.labelSpace = (Space) findViewById(TiRHelper.getResource("id.text_field_boxes_label_space"));
-	        this.labelSpaceBelow = (Space) findViewById(TiRHelper.getResource("id.text_field_boxes_label_space_below"));
-	        this.bottomLine = findViewById(TiRHelper.getResource("id.bg_bottom_line"));
-	        this.rightShell = (RelativeLayout) findViewById(TiRHelper.getResource("id.text_field_boxes_right_shell"));
-	        this.upperPanel = (RelativeLayout) findViewById(TiRHelper.getResource("id.text_field_boxes_upper_panel"));
-	        this.bottomPart = (RelativeLayout) findViewById(TiRHelper.getResource("id.text_field_boxes_bottom"));
-	        this.clearButton = (AppCompatImageButton) findViewById(TiRHelper.getResource("id.text_field_boxes_clear_button"));
-	        this.endIconImageButton = (AppCompatImageButton) findViewById(TiRHelper.getResource("id.text_field_boxes_end_icon_button"));
-	        this.helperLabel = (AppCompatTextView) findViewById(TiRHelper.getResource("id.text_field_boxes_helper"));
-	        this.counterLabel = (AppCompatTextView) findViewById(TiRHelper.getResource("id.text_field_boxes_counter"));
-	        this.iconImageButton = (AppCompatImageButton) findViewById(TiRHelper.getResource("id.text_field_boxes_imageView"));
-	        this.editTextLayout = (ViewGroup) findViewById(TiRHelper.getResource("id.text_field_boxes_editTextLayout"));
+	        this.inputLayout = (RelativeLayout) this.findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_input_layout"));
+	        this.floatingLabel = (AppCompatTextView) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_label"));
+	        this.panel = findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_panel"));
+	        this.labelSpace = (Space) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_label_space"));
+	        this.labelSpaceBelow = (Space) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_label_space_below"));
+	        this.bottomLine = findViewById(TiRHelper.getApplicationResource("id.bg_bottom_line"));
+	        this.rightShell = (RelativeLayout) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_right_shell"));
+	        this.upperPanel = (RelativeLayout) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_upper_panel"));
+	        this.bottomPart = (RelativeLayout) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_bottom"));
+	        this.clearButton = (AppCompatImageButton) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_clear_button"));
+	        this.endIconImageButton = (AppCompatImageButton) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_end_icon_button"));
+	        this.helperLabel = (AppCompatTextView) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_helper"));
+	        this.counterLabel = (AppCompatTextView) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_counter"));
+	        this.iconImageButton = (AppCompatImageButton) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_imageView"));
+	        this.editTextLayout = (ViewGroup) findViewById(TiRHelper.getApplicationResource("id.text_field_boxes_editTextLayout"));
         
         } catch (ResourceNotFoundException e) {
 			e.printStackTrace();
@@ -440,8 +443,7 @@ public class TextFieldBoxes extends FrameLayout {
         this.clearButton.setAlpha(0.35f);
         this.endIconImageButton.setColorFilter(DEFAULT_TEXT_COLOR);
         this.endIconImageButton.setAlpha(0.54f);
-        this.labelTopMargin = RelativeLayout.LayoutParams.class
-                .cast(this.floatingLabel.getLayoutParams()).topMargin;
+        this.labelTopMargin = RelativeLayout.LayoutParams.class.cast(this.floatingLabel.getLayoutParams()).topMargin;
 
         initOnClick();
 
@@ -527,51 +529,104 @@ public class TextFieldBoxes extends FrameLayout {
             }
         });
     }
+    
+    public static final int[] getResourceDeclareStyleableIntArray(Context context, String name) {
+		try {
+			Field[] fields2 = Class.forName(context.getPackageName() + ".R$styleable").getFields();
+			for (Field f : fields2) {
+				if (f.getName().equals(name)) {
+					int[] ret = (int[]) f.get(null);
+					return ret;
+				}
+			}
+		} catch (Throwable t) {
+		}
+
+		return null;
+	}
 
     protected void handleAttributes(Context context, AttributeSet attrs) {
-
+    	
+    	this.context = context;
+		resources = this.context.getResources();
+    	
         try {
-
-            TypedArray styledAttrs = context.obtainStyledAttributes(attrs, null, TiRHelper.getResource("styleable.TextFieldBoxes"), ANIMATION_DURATION);
+        	//int TextFieldBoxesParamsID = resources.getIdentifier("TextFieldBoxes", "styleable", context.getPackageName());
+			//int[] TextFieldBoxesParams = resources.getIntArray(TextFieldBoxesParamsID);
+			int[] TextFieldBoxesParams = getResourceDeclareStyleableIntArray(this.context, "TextFieldBoxes");
+			TypedArray styledAttrs = context.obtainStyledAttributes(attrs, TextFieldBoxesParams);
 
             /* Texts */
-            this.labelText = styledAttrs.getString(TiRHelper.getResource("styleable.TextFieldBoxes_labelText"))
-                    == null ? "" : styledAttrs.getString(TiRHelper.getResource("styleable.TextFieldBoxes_labelText"));
-            this.helperText = styledAttrs.getString(TiRHelper.getResource("styleable.TextFieldBoxes_helperText"))
-                    == null ? "" : styledAttrs.getString(TiRHelper.getResource("styleable.TextFieldBoxes_helperText"));
+            this.labelText = styledAttrs.getString(resources.getIdentifier("TextFieldBoxes_labelText", "styleable", context.getPackageName()))
+                    == null ? "" : styledAttrs.getString(resources.getIdentifier("TextFieldBoxes_labelText", "styleable", context.getPackageName()));
+            this.helperText = styledAttrs.getString(resources.getIdentifier("TextFieldBoxes_helperText", "styleable", context.getPackageName()))
+                    == null ? "" : styledAttrs.getString(resources.getIdentifier("TextFieldBoxes_helperText", "styleable", context.getPackageName()));
 
             /* Colors */
-            this.helperTextColor = styledAttrs
-                    .getInt(TiRHelper.getResource("styleable.TextFieldBoxes_helperTextColor"), DEFAULT_TEXT_COLOR);
-            this.counterTextColor = styledAttrs
-                    .getInt(TiRHelper.getResource("styleable.TextFieldBoxes_counterTextColor"), DEFAULT_TEXT_COLOR);
-            this.errorColor = styledAttrs
-                    .getInt(TiRHelper.getResource("styleable.TextFieldBoxes_errorColor"), DEFAULT_ERROR_COLOR);
-            this.primaryColor = styledAttrs
-                    .getColor(TiRHelper.getResource("styleable.TextFieldBoxes_primaryColor"), DEFAULT_PRIMARY_COLOR);
-            this.secondaryColor = styledAttrs
-                    .getColor(TiRHelper.getResource("styleable.TextFieldBoxes_secondaryColor"), DEFAULT_TEXT_COLOR);
-            this.panelBackgroundColor = styledAttrs
-                    .getColor(TiRHelper.getResource("styleable.TextFieldBoxes_panelBackgroundColor"), DEFAULT_BG_COLOR);
+            
+            try{
+            	this.helperTextColor = resources.getIdentifier("TextFieldBoxes_helperTextColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.helperTextColor = DEFAULT_TEXT_COLOR;
+            }
+            
+            try{
+            	this.counterTextColor = resources.getIdentifier("TextFieldBoxes_counterTextColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.counterTextColor = DEFAULT_TEXT_COLOR;
+            }
+            
+            try{
+            	this.errorColor = resources.getIdentifier("TextFieldBoxes_errorColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.errorColor = DEFAULT_ERROR_COLOR;
+            }
+            
+            try{
+            	this.primaryColor = resources.getIdentifier("TextFieldBoxes_primaryColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.primaryColor = DEFAULT_PRIMARY_COLOR;
+            }
+            
+            try{
+            	this.secondaryColor = resources.getIdentifier("TextFieldBoxes_secondaryColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.secondaryColor = DEFAULT_TEXT_COLOR;
+            }
+            
+            try{
+            	this.panelBackgroundColor = resources.getIdentifier("TextFieldBoxes_panelBackgroundColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.panelBackgroundColor = DEFAULT_BG_COLOR;
+            }
+            
+            //this.helperTextColor = styledAttrs.getInt(resources.getIdentifier("TextFieldBoxes_helperTextColor", "styleable", context.getPackageName()), DEFAULT_TEXT_COLOR);
+            //this.counterTextColor = styledAttrs.getInt(resources.getIdentifier("TextFieldBoxes_counterTextColor", "styleable", context.getPackageName()), DEFAULT_TEXT_COLOR);
+            //this.errorColor = styledAttrs.getInt(resources.getIdentifier("TextFieldBoxes_errorColor", "styleable", context.getPackageName()), DEFAULT_ERROR_COLOR);
+            //this.primaryColor = styledAttrs.getColor(resources.getIdentifier("TextFieldBoxes_primaryColor", "styleable", context.getPackageName()), DEFAULT_PRIMARY_COLOR);
+            //this.secondaryColor = styledAttrs.getColor(resources.getIdentifier("TextFieldBoxes_secondaryColor", "styleable", context.getPackageName()), DEFAULT_TEXT_COLOR);
+            //this.panelBackgroundColor = styledAttrs.getColor(resources.getIdentifier("TextFieldBoxes_panelBackgroundColor", "styleable", context.getPackageName()), DEFAULT_BG_COLOR);
 
             /* Characters counter */
-            this.maxCharacters = styledAttrs.getInt(TiRHelper.getResource("styleable.TextFieldBoxes_maxCharacters"), 0);
-            this.minCharacters = styledAttrs.getInt(TiRHelper.getResource("styleable.TextFieldBoxes_minCharacters"), 0);
+            this.maxCharacters = styledAttrs.getInt(resources.getIdentifier("TextFieldBoxes_maxCharacters", "styleable", context.getPackageName()), 0);
+            this.minCharacters = styledAttrs.getInt(resources.getIdentifier("TextFieldBoxes_minCharacters", "styleable", context.getPackageName()), 0);
 
             /* Others */
-            this.isManualValidateError = styledAttrs.getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_manualValidateError"), false);
-            this.enabled = styledAttrs.getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_enabled"), true);
-            this.iconSignifierResourceId = styledAttrs.
-                    getResourceId(TiRHelper.getResource("styleable.TextFieldBoxes_iconSignifier"), 0);
-            this.endIconResourceId = styledAttrs.
-                    getResourceId(TiRHelper.getResource("styleable.TextFieldBoxes_endIcon"), 0);
-            this.isResponsiveIconColor = styledAttrs
-                    .getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_isResponsiveIconColor"), true);
-            this.hasClearButton = styledAttrs
-                    .getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_hasClearButton"), false);
-            this.hasFocus = styledAttrs.getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_hasFocus"), false);
-            this.alwaysShowHint = styledAttrs.getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_alwaysShowHint"), false);
-            this.useDenseSpacing = styledAttrs.getBoolean(TiRHelper.getResource("styleable.TextFieldBoxes_useDenseSpacing"), false);
+            this.isManualValidateError = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_manualValidateError", "styleable", context.getPackageName()), false);
+            this.enabled = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_enabled", "styleable", context.getPackageName()), true);
+            this.iconSignifierResourceId = styledAttrs.getResourceId(resources.getIdentifier("TextFieldBoxes_iconSignifier", "styleable", context.getPackageName()), 0);
+            this.endIconResourceId = styledAttrs.getResourceId(resources.getIdentifier("TextFieldBoxes_endIcon", "styleable", context.getPackageName()), 0);
+            this.isResponsiveIconColor = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_isResponsiveIconColor", "styleable", context.getPackageName()), true);
+            this.hasClearButton = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_hasClearButton", "styleable", context.getPackageName()), false);
+            this.hasFocus = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_hasFocus", "styleable", context.getPackageName()), false);
+            this.alwaysShowHint = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_alwaysShowHint", "styleable", context.getPackageName()), false);
+            this.useDenseSpacing = styledAttrs.getBoolean(resources.getIdentifier("TextFieldBoxes_useDenseSpacing", "styleable", context.getPackageName()), false);
 
             styledAttrs.recycle();
 
@@ -599,7 +654,7 @@ public class TextFieldBoxes extends FrameLayout {
                 this.floatingLabel.setScaleX(0.75f);
                 this.floatingLabel.setScaleY(0.75f);
                 try {
-					this.floatingLabel.setTranslationY(-labelTopMargin + getContext().getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.label_active_margin_top")));
+					this.floatingLabel.setTranslationY(-labelTopMargin + getContext().getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.label_active_margin_top")));
 				} catch (ResourceNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -642,8 +697,14 @@ public class TextFieldBoxes extends FrameLayout {
             this.floatingLabel.setScaleY(1f);
             this.floatingLabel.setTranslationY(0);
         }
-
-        final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
+        
+        boolean keepHint = true;
+        try {
+        	keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
+        } catch (Exception e){
+        	Log.d(LCAT, e.getMessage() + " - keepHint will set to false");
+        }
+       
         if (animated && !keepHint) {
 
             ViewCompat.animate(this.editTextLayout)
@@ -655,7 +716,7 @@ public class TextFieldBoxes extends FrameLayout {
 				        .scaleX(0.75f)
 				        .scaleY(0.75f)
 				        .translationY(-labelTopMargin +
-				                getContext().getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.label_active_margin_top")))
+				                getContext().getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.label_active_margin_top")))
 				        .setDuration(ANIMATION_DURATION);
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -671,7 +732,7 @@ public class TextFieldBoxes extends FrameLayout {
             this.floatingLabel.setScaleY(0.75f);
             try {
 				this.floatingLabel.setTranslationY(-labelTopMargin +
-				        getContext().getResources().getDimensionPixelOffset(TiRHelper.getResource("dimen.label_active_margin_top")));
+				        getContext().getResources().getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.label_active_margin_top")));
 			} catch (ResourceNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -761,8 +822,8 @@ public class TextFieldBoxes extends FrameLayout {
         try {
 			lp.topMargin = res.getDimensionPixelOffset(
 			        useDenseSpacing ?
-			        		TiRHelper.getResource("dimen.dense_label_idle_margin_top") :
-			        		TiRHelper.getResource("dimen.label_idle_margin_top")
+			        		TiRHelper.getApplicationResource("dimen.dense_label_idle_margin_top") :
+			        		TiRHelper.getApplicationResource("dimen.label_idle_margin_top")
 			);
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -778,10 +839,10 @@ public class TextFieldBoxes extends FrameLayout {
 			this.inputLayout.setPadding(
 			        0, res.getDimensionPixelOffset(
 			                useDenseSpacing ?
-			                		TiRHelper.getResource("dimen.dense_editTextLayout_padding_top") :
-			                		TiRHelper.getResource("dimen.editTextLayout_padding_top")
+			                		TiRHelper.getApplicationResource("dimen.dense_editTextLayout_padding_top") :
+			                		TiRHelper.getApplicationResource("dimen.editTextLayout_padding_top")
 			        ),
-			        0, res.getDimensionPixelOffset(TiRHelper.getResource("dimen.editTextLayout_padding_bottom")));
+			        0, res.getDimensionPixelOffset(TiRHelper.getApplicationResource("dimen.editTextLayout_padding_bottom")));
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -795,8 +856,8 @@ public class TextFieldBoxes extends FrameLayout {
 			this.endIconImageButton.setMinimumHeight(
 			        res.getDimensionPixelOffset(
 			                useDenseSpacing ?
-			                		TiRHelper.getResource("dimen.end_icon_min_height") :
-			                		TiRHelper.getResource("dimen.dense_end_icon_min_height")
+			                		TiRHelper.getApplicationResource("dimen.end_icon_min_height") :
+			                		TiRHelper.getApplicationResource("dimen.dense_end_icon_min_height")
 			        )
 			);
 		} catch (ResourceNotFoundException e) {
@@ -810,8 +871,8 @@ public class TextFieldBoxes extends FrameLayout {
 			this.endIconImageButton.setMinimumWidth(
 			        res.getDimensionPixelOffset(
 			                useDenseSpacing ?
-			                		TiRHelper.getResource("dimen.end_icon_min_width") :
-			                		TiRHelper.getResource("dimen.dense_end_icon_min_width")
+			                		TiRHelper.getApplicationResource("dimen.end_icon_min_width") :
+			                		TiRHelper.getApplicationResource("dimen.dense_end_icon_min_width")
 			        )
 			);
 		} catch (ResourceNotFoundException e) {
@@ -827,8 +888,8 @@ public class TextFieldBoxes extends FrameLayout {
 			this.clearButton.setMinimumHeight(
 			        res.getDimensionPixelOffset(
 			                useDenseSpacing ?
-			                		TiRHelper.getResource("dimen.clear_button_min_height") :
-			                		TiRHelper.getResource("dimen.dense_clear_button_min_height")
+			                		TiRHelper.getApplicationResource("dimen.clear_button_min_height") :
+			                		TiRHelper.getApplicationResource("dimen.dense_clear_button_min_height")
 			        )
 			);
 		} catch (ResourceNotFoundException e) {
@@ -842,8 +903,8 @@ public class TextFieldBoxes extends FrameLayout {
 			this.clearButton.setMinimumWidth(
 			        res.getDimensionPixelOffset(
 			                useDenseSpacing ?
-			                		TiRHelper.getResource("dimen.clear_button_min_width") :
-			                		TiRHelper.getResource("dimen.dense_clear_button_min_width")
+			                		TiRHelper.getApplicationResource("dimen.clear_button_min_width") :
+			                		TiRHelper.getApplicationResource("dimen.dense_clear_button_min_width")
 			        )
 			);
 		} catch (ResourceNotFoundException e) {
@@ -859,8 +920,8 @@ public class TextFieldBoxes extends FrameLayout {
         try {
 			lp.topMargin = res.getDimensionPixelOffset(
 			        useDenseSpacing ?
-			        		TiRHelper.getResource("dimen.dense_bottom_marginTop") :
-			        		TiRHelper.getResource("dimen.bottom_marginTop")
+			        		TiRHelper.getApplicationResource("dimen.dense_bottom_marginTop") :
+			        		TiRHelper.getApplicationResource("dimen.bottom_marginTop")
 			);
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -875,8 +936,8 @@ public class TextFieldBoxes extends FrameLayout {
         try {
 			this.editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, res.getDimension(
 			        useDenseSpacing ?
-			        		TiRHelper.getResource("dimen.dense_edittext_text_size") :
-			        		TiRHelper.getResource("dimen.edittext_text_size")
+			        		TiRHelper.getApplicationResource("dimen.dense_edittext_text_size") :
+			        		TiRHelper.getApplicationResource("dimen.edittext_text_size")
 			));
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -919,7 +980,7 @@ public class TextFieldBoxes extends FrameLayout {
         String lengthStr = Integer.toString(length) + " / ";
         String counterLabelResourceStr = null;
 		try {
-			counterLabelResourceStr = getResources().getString(TiRHelper.getResource("string.counter_label_text_constructor"));
+			counterLabelResourceStr = getResources().getString(TiRHelper.getApplicationResource("string.counter_label_text_constructor"));
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

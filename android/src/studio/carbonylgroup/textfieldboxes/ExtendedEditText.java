@@ -1,6 +1,11 @@
 package studio.carbonylgroup.textfieldboxes;
 
+import java.lang.reflect.Field;
+
+import org.appcelerator.kroll.common.Log;
+import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.util.TiRHelper;
+import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,7 +20,6 @@ import android.support.design.widget.TextInputEditText;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 /**
  * Text Field Boxes
  * Created by CarbonylGroup on 2017/09/01
@@ -26,6 +30,7 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
     public int DEFAULT_TEXT_COLOR;
     private OnFocusChangeListener defaultFocusListener;
     private CompositeListener focusListener = new CompositeListener();
+    private static final String LCAT = "ExtendedEditText";
 
     /**
      * prefix Label text at the start.
@@ -46,16 +51,17 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
      * Suffix text color. DEFAULT_TEXT_COLOR by default.
      */
     protected int suffixTextColor;
-
+    
+    private Context context;
+	private Resources resources;
+    
     public ExtendedEditText(Context context) {
-
         this(context, null);
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
     }
 
     public ExtendedEditText(Context context, AttributeSet attrs) {
-
         this(context, attrs, android.R.attr.editTextStyle);
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
@@ -63,7 +69,6 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
     }
 
     public ExtendedEditText(Context context, AttributeSet attrs, int defStyle) {
-
         super(context, attrs, defStyle);
         super.setOnFocusChangeListener(focusListener);
         initDefaultColor();
@@ -109,25 +114,59 @@ public class ExtendedEditText extends TextInputAutoCompleteTextView {
         defaultFocusListener = l;
         focusListener.registerListener(l);
     }
+    
+    public static final int[] getResourceDeclareStyleableIntArray(Context context, String name) {
+		try {
+			Field[] fields2 = Class.forName(context.getPackageName() + ".R$styleable").getFields();
+			for (Field f : fields2) {
+				if (f.getName().equals(name)) {
+					int[] ret = (int[]) f.get(null);
+					return ret;
+				}
+			}
+		} catch (Throwable t) {
+		}
 
+		return null;
+	}
+    
     protected void handleAttributes(Context context, AttributeSet attrs) {
+    	
+    	this.context = context;
+		resources = this.context.getResources();
+		
         try {
-
-            TypedArray styledAttrs = context.obtainStyledAttributes(attrs, null, TiRHelper.getResource("styleable.ExtendedEditText"), DEFAULT_TEXT_COLOR);
-
-            /* Texts */
-            this.prefix = styledAttrs.getString(TiRHelper.getResource("styleable.ExtendedEditText_prefix"))
-                    == null ? "" : styledAttrs.getString(TiRHelper.getResource("styleable.ExtendedEditText_prefix"));
-            this.suffix = styledAttrs.getString(TiRHelper.getResource("styleable.ExtendedEditText_suffix"))
-                    == null ? "" : styledAttrs.getString(TiRHelper.getResource("styleable.ExtendedEditText_suffix"));
+			//int ExtendedEditTextParamsID = TiRHelper.getApplicationResource("styleable.ExtendedEditText");
+			//int[] ExtendedEditTextParams = resources.getIntArray(ExtendedEditTextParamsID);
+			int[] ExtendedEditTextParams = getResourceDeclareStyleableIntArray(this.context, "ExtendedEditText");
+			TypedArray styledAttrs = context.obtainStyledAttributes(attrs, ExtendedEditTextParams);
+			
+			/* Texts */
+			this.prefix = styledAttrs.getString(resources.getIdentifier("ExtendedEditText_prefix", "styleable", context.getPackageName())) 
+					== null ? "" : styledAttrs.getString(resources.getIdentifier("ExtendedEditText_prefix", "styleable", context.getPackageName()));
+			this.suffix = styledAttrs.getString(resources.getIdentifier("ExtendedEditText_suffix", "styleable", context.getPackageName())) 
+					== null ? "" : styledAttrs.getString(resources.getIdentifier("ExtendedEditText_suffix", "styleable", context.getPackageName()));
 
             /* Colors */
-            this.prefixTextColor = styledAttrs
-                    .getInt(TiRHelper.getResource("styleable.ExtendedEditText_prefixTextColor"), DEFAULT_TEXT_COLOR);
-            this.suffixTextColor = styledAttrs
-                    .getInt(TiRHelper.getResource("styleable.ExtendedEditText_suffixTextColor"), DEFAULT_TEXT_COLOR);
-            styledAttrs.recycle();
-
+			try{
+            	this.prefixTextColor = resources.getIdentifier("ExtendedEditText_prefixTextColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.prefixTextColor = DEFAULT_TEXT_COLOR;
+            }
+			
+			try{
+            	this.suffixTextColor = resources.getIdentifier("ExtendedEditText_prefixTextColor", "styleable", context.getPackageName());
+            } catch (Exception e){
+            	e.printStackTrace();
+            	this.suffixTextColor = DEFAULT_TEXT_COLOR;
+            }
+			
+            //this.prefixTextColor = styledAttrs.getInt(resources.getIdentifier("ExtendedEditText_prefixTextColor", "styleable", context.getPackageName()), DEFAULT_TEXT_COLOR);
+            //this.suffixTextColor = styledAttrs.getInt(resources.getIdentifier("ExtendedEditText_suffixTextColor", "styleable", context.getPackageName()), DEFAULT_TEXT_COLOR);
+            
+			styledAttrs.recycle();
+			
         } catch (Exception e) {
             e.printStackTrace();
         }

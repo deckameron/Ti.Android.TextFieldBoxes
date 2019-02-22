@@ -1,39 +1,43 @@
-// This is a test harness for your module
-// You should do something interesting in this harness
-// to test out the module and to provide instructions
-// to users on how to use it by example.
-
-
-// open a single window
-var win = Ti.UI.createWindow({
-	backgroundColor:'white'
+var TextFieldBoxes = require('ti.android.textfieldboxes');
+    
+var window = Titanium.UI.createWindow({
+    backgroundColor : '#FFFFFF',
+    layout : 'vertical'
 });
-var label = Ti.UI.createLabel();
-win.add(label);
-win.open();
 
-// TODO: write your module tests here
-var textfieldboxes = require('ti.android.textfieldboxes');
-Ti.API.info("module is => " + textfieldboxes);
+var TFBoxes = TextFieldBoxes.createView({
+    top : 16,
+    left : 16,
+    right : 16,
+    theme : TextFieldBoxes.DARK_THEME,
+    hintText : "Write your email",
+    hasClearButton : false,
+    helperText : "Must fill this",
+    minCharacters : 1,
+    suffixText : " @gmail.com",
+    //textColor : "#212121",                //grey 900
+    //counterTextColor : "#424242",         //grey 800
+    //errorColor : "#f44336",               //red 500
+    //primaryColor : "#673ab7",             //DeepPurple 500
+    //secondaryColor : "#b39ddb",           //DeepPurple 200
+    //panelBackgroundColor : "#e0e0e0",     //grey 300
+    //prefixText : "R$ ",
+    //iconSignifier : "baseline_search_white_24",
+    //endIcon : "baseline_mic_white_24"
+    //suffixTextColor : "#757575"           //grey 600
+});
+window.add(TFBoxes);
 
-label.text = textfieldboxes.example();
+TFBoxes.addEventListener(TextFieldBoxes.END_ICON_CLICK, function(e){
+    Ti.API.info(JSON.stringify(e));
+});
 
-Ti.API.info("module exampleProp is => " + textfieldboxes.exampleProp);
-textfieldboxes.exampleProp = "This is a test value";
+TFBoxes.addEventListener(TextFieldBoxes.ICON_IMAGE_CLICK, function(e){
+    Ti.API.info(JSON.stringify(e));
+});
 
-if (Ti.Platform.name == "android") {
-	var proxy = textfieldboxes.createExample({
-		message: "Creating an example Proxy",
-		backgroundColor: "red",
-		width: 100,
-		height: 100,
-		top: 100,
-		left: 150
-	});
+TFBoxes.addEventListener(TextFieldBoxes.ON_TEXT_CHANGE, function(e){
+    Ti.API.info(JSON.stringify(e));
+});
 
-	proxy.printMessage("Hello world!");
-	proxy.message = "Hi world!.  It's me again.";
-	proxy.printMessage("Hello world!");
-	win.add(proxy);
-}
-
+window.open();
