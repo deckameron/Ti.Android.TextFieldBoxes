@@ -339,12 +339,12 @@ var TFBoxes = TextFieldBoxes.createView({
 
 ##### Icons
 ***NOTE  that the image resources  should be in `/platform/android/res/drawable-{density}` folders***
+
 | Attribute | Description | Default |
 | --- | --- | --- |
 | `iconSignifier` | The string ID of the icon before the TextFieldBoxes | `0` |
 | `endIcon` | The string ID of the icon at the end of the field | `0` |
 | `isResponsiveIconColor` | whether the icon signifier will change its color when gaining or losing focus as the label and the bottomLine do | `True` |
-
 
 ##### Characters counter
 
