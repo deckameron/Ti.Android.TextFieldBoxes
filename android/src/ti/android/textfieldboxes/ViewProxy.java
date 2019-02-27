@@ -17,6 +17,7 @@ import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.Editable;
 
 
 // This proxy can be created by calling Textfieldboxes.createView({message: "hello world"})
@@ -28,7 +29,7 @@ public class ViewProxy extends TiViewProxy
 	private static final boolean DBG = TiConfig.LOGD;
 	
 	private TextFieldBoxesView textFieldBoxesView;
-
+	
 	// Constructor
 	public ViewProxy()
 	{
@@ -60,6 +61,27 @@ public class ViewProxy extends TiViewProxy
 		}
 	}
 	
+	// Methods
+	@Kroll.setProperty @Kroll.method
+	public void setAlwaysShowHint(Boolean alwaysShowHint)
+	{
+		if(alwaysShowHint instanceof Boolean){
+			textFieldBoxesView.textFieldBoxes.setAlwaysShowHint(alwaysShowHint);
+		} else {
+			Log.e(LCAT, "setAlwaysShowHint should receive only Boolean");
+		}
+	}
+	
+	@Kroll.setProperty @Kroll.method
+	public void setHasFocus(Boolean hasFocus)
+	{
+		if(hasFocus instanceof Boolean){
+			textFieldBoxesView.textFieldBoxes.setHasFocus(hasFocus);
+		} else {
+			Log.e(LCAT, "setHasFocus should receive only Boolean");
+		}
+	}
+	
 	@Kroll.setProperty @Kroll.method
 	public void setTextColor(String textColor)
 	{
@@ -77,6 +99,16 @@ public class ViewProxy extends TiViewProxy
 			textFieldBoxesView.textFieldBoxes.setCounterTextColor(Color.parseColor(counterTextColor));
 		} else {
 			Log.e(LCAT, "setCounterTextColor should receive only color strings. Ex: \"#424242\"");
+		}
+	}
+	
+	@Kroll.method
+	public void setError(String errorMessage, Boolean giveFocus)
+	{
+		if(errorMessage instanceof String){
+			textFieldBoxesView.textFieldBoxes.setError(errorMessage, giveFocus);
+		} else {
+			Log.e(LCAT, "setError should receive only strings for errorMessage and Boolean for giveFocus");
 		}
 	}
 	
@@ -121,6 +153,16 @@ public class ViewProxy extends TiViewProxy
 	}
 	
 	@Kroll.setProperty @Kroll.method
+	public void setUseDenseSpacing(Boolean useDenseSpacing)
+	{
+		if(useDenseSpacing instanceof Boolean){
+			textFieldBoxesView.textFieldBoxes.setUseDenseSpacing(useDenseSpacing);
+		} else {
+			Log.e(LCAT, "setUseDenseSpacing should receive only booleans");
+		}
+	}
+	
+	@Kroll.setProperty @Kroll.method
 	public void setHasClearButton(Boolean hasClearButton)
 	{
 		if(hasClearButton instanceof Boolean){
@@ -158,6 +200,18 @@ public class ViewProxy extends TiViewProxy
 		} else {
 			Log.e(LCAT, "setMaxCharacters should receive only int");
 		}
+	}
+	
+	@Kroll.method
+	public void removeMinCharacters()
+	{
+		textFieldBoxesView.textFieldBoxes.removeMinCharacters();
+	}
+	
+	@Kroll.method
+	public void removeMaxCharacters()
+	{
+		textFieldBoxesView.textFieldBoxes.removeMaxCharacters();
 	}
 	
 	@Kroll.setProperty @Kroll.method
@@ -201,6 +255,35 @@ public class ViewProxy extends TiViewProxy
 	}
 	
 	@Kroll.setProperty @Kroll.method
+	public void setText(String text)
+	{
+		if(text instanceof String){
+			if (!TextFieldBoxesView.isTextFieldUpdating) {
+				textFieldBoxesView.extendedEditText.setText(text);
+				textFieldBoxesView.extendedEditText.setSelection(text.length());
+			}
+		} else {
+			Log.e(LCAT, "setText should receive only strings.");
+		}
+	}
+	
+	@Kroll.method
+	public void setSelection(int selection)
+	{
+		if(selection == (int) selection){
+			textFieldBoxesView.extendedEditText.setSelection(selection);
+		} else {
+			Log.e(LCAT, "setSelection should receive only int");
+		}
+	}
+	
+	@Kroll.getProperty @Kroll.method
+	public String getText()
+	{
+		return textFieldBoxesView.extendedEditText.getText().toString();
+	}
+	
+	@Kroll.setProperty @Kroll.method
 	public void setTheme(int theme)
 	{
 		textFieldBoxesView.setTheme(theme);
@@ -213,8 +296,24 @@ public class ViewProxy extends TiViewProxy
 	}
 	
 	@Kroll.setProperty @Kroll.method
+	public void setIsResponsiveIconColor(Boolean isResponsiveIconColor)
+	{
+		textFieldBoxesView.setIsResponsiveIconColor(isResponsiveIconColor);
+	}
+	
+	@Kroll.setProperty @Kroll.method
 	public void setEndIcon(String endIcon)
 	{
 		textFieldBoxesView.setEndIcon(endIcon);
+	}
+	
+	@Kroll.setProperty @Kroll.method
+	public void setMaxLength(int length)
+	{
+		if(length == (int) length){
+			textFieldBoxesView.setMaxLength(length);
+		} else {
+			Log.e(LCAT, "setSelection should receive only int");
+		}
 	}
 }
