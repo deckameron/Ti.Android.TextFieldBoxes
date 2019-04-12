@@ -121,6 +121,12 @@ public class TextFieldBoxesView extends TiUIView {
 		} else {
 			setTheme(TextfieldboxesModule.LIGHT_THEME);
 		}
+
+		if (options.containsKey("text")) {
+			String text = options.getString("text");
+			extendedEditText.setText(text);
+			extendedEditText.setSelection(text.length());
+		}
 		
 		if (options.containsKey("hasFocus")) {
 			textFieldBoxes.setHasFocus(options.getBoolean("hasFocus"));

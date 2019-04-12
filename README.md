@@ -319,7 +319,8 @@ var TFBoxes = TextFieldBoxes.createView({
 
 | Attribute | Description |
 | --- | --- |
-| `labelText` | Floating label text at the top |
+| `text` | The value of the text input |
+| `hintText` | Floating label text at the top |
 | `helperText` | Helper text at the bottom |
 | `prefix` | Prefix Text |
 | `suffix` | Suffix Text |
