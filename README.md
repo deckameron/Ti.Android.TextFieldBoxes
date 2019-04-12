@@ -93,7 +93,7 @@ error text: `setError(String errorText, boolean giveFocus)`
 *NOTE: Error will be removed when the text changes (input or delete).*
 
 ```javascript
-setError("Error message", true);
+TFBoxes.setError("Error message", true);
 ```
 
 ![](https://raw.githubusercontent.com/HITGIF/TextFieldBoxes/master/images/error.png)
@@ -138,8 +138,8 @@ The color of the bottom line will turn to `errorColor` (red by default) when exc
 ```javascript
 var TFBoxes = TextFieldBoxes.createView({
     ...
-    maxCharacters : "10",
-    minCharacters : "5"
+    maxCharacters : 10,
+    minCharacters : 5
 });
 ```
 
@@ -148,7 +148,7 @@ var TFBoxes = TextFieldBoxes.createView({
 ```javascript
 var TFBoxes = TextFieldBoxes.createView({
     ...
-    maxCharacters : "5"
+    maxCharacters : 5
 });
 ```
 
@@ -228,15 +228,6 @@ var TFBoxes = TextFieldBoxes.createView({
 
 *Panel Background Color* will be used for the color of panel at the back. You can use `panelBackgroundColor` on creation or `setPanelBackgroundColor(String color)`. It is set <font color="#E0E0E0">**`#E0E0E0`**</font> by default.
 
-```xml
-<studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-    ...
-    app:primaryColor="#1B5E20"
-    app:errorColor="#ddaa00"
-    app:helperTextColor="#795548"
-    app:panelBackgroundColor="#ffe8e8"
-    >
-```
 ```javascript
 var TFBoxes = TextFieldBoxes.createView({
     ...
