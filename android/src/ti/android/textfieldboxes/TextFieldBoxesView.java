@@ -25,7 +25,7 @@ public class TextFieldBoxesView extends TiUIView {
 	public ExtendedEditText extendedEditText;
 	private TiViewProxy _proxy;
 	static Context appContext;
-	
+
 	public static boolean isTextFieldUpdating;
 
 	public TextFieldBoxesView(TiViewProxy proxy) {
@@ -38,70 +38,62 @@ public class TextFieldBoxesView extends TiUIView {
 		int module_layout_id = 0;
 		int extended_edit_text_id = 0;
 		int text_field_box_id = 0;
-		
+
 		try {
-			module_layout_id = TiRHelper
-					.getApplicationResource("layout.module_layout");
-			text_field_box_id = TiRHelper
-					.getApplicationResource("id.text_field_box");
-			extended_edit_text_id = TiRHelper
-					.getApplicationResource("id.extended_edit_text");
+			module_layout_id = TiRHelper.getApplicationResource("layout.module_layout");
+			text_field_box_id = TiRHelper.getApplicationResource("id.text_field_box");
+			extended_edit_text_id = TiRHelper.getApplicationResource("id.extended_edit_text");
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 		}
 
 		LayoutInflater inflater = LayoutInflater.from(appContext);
-		RelativeLayout moduleWrapper = (RelativeLayout) inflater.inflate(
-				module_layout_id, null);
+		RelativeLayout moduleWrapper = (RelativeLayout) inflater.inflate(module_layout_id, null);
 		textFieldBoxes = (TextFieldBoxes) moduleWrapper.findViewById(text_field_box_id);
 		extendedEditText = (ExtendedEditText) textFieldBoxes.findViewById(extended_edit_text_id);
-		
-		textFieldBoxes.getEndIconImageButton().setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						// What you want to do when it's clicked
-						Log.d(LCAT, "EndIcon Click");
-						_proxy.fireEvent(TextfieldboxesModule.END_ICON_CLICK, new KrollDict());
-					}
-				});
 
-		textFieldBoxes.getIconImageButton().setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						// What you want to do when it's clicked
-						Log.d(LCAT, "IconImage onClick");
-						_proxy.fireEvent(TextfieldboxesModule.ICON_IMAGE_CLICK, new KrollDict());
-					}
-				});
+		textFieldBoxes.getEndIconImageButton().setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// What you want to do when it's clicked
+				Log.d(LCAT, "EndIcon Click");
+				_proxy.fireEvent(TextfieldboxesModule.END_ICON_CLICK, new KrollDict());
+			}
+		});
+
+		textFieldBoxes.getIconImageButton().setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// What you want to do when it's clicked
+				Log.d(LCAT, "IconImage onClick");
+				_proxy.fireEvent(TextfieldboxesModule.ICON_IMAGE_CLICK, new KrollDict());
+			}
+		});
 
 		textFieldBoxes.setSimpleTextChangeWatcher(new SimpleTextChangedWatcher() {
 
-					@Override
-					public void onTextChanged(String theNewText, boolean isError) {
-						// What you want to do when text changes
-						KrollDict props = new KrollDict();
-						props.put("text", theNewText);
-						_proxy.fireEvent(TextfieldboxesModule.ON_TEXT_CHANGE, props);
-						
-						if (isTextFieldUpdating) {
-							isTextFieldUpdating = false;
-							return;
-						}
-						
-						isTextFieldUpdating = true;
-					}
-				});
+			@Override
+			public void onTextChanged(String theNewText, boolean isError) {
+				// What you want to do when text changes
+				KrollDict props = new KrollDict();
+				props.put("text", theNewText);
+				_proxy.fireEvent(TextfieldboxesModule.ON_TEXT_CHANGE, props);
+
+				if (isTextFieldUpdating) {
+					isTextFieldUpdating = false;
+					return;
+				}
+
+				isTextFieldUpdating = true;
+			}
+		});
 
 		setNativeView(moduleWrapper);
 	}
 
 	public static String unmask(final String s) {
-		return s.replaceAll("[.]", "").replaceAll("[-]", "")
-				.replaceAll("[/]", "").replaceAll("[(]", "")
-				.replaceAll("[ ]", "").replaceAll("[:]", "")
-				.replaceAll("[)]", "");
+		return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "")
+				.replaceAll("[ ]", "").replaceAll("[:]", "").replaceAll("[)]", "");
 	}
 
 	@Override
@@ -127,11 +119,11 @@ public class TextFieldBoxesView extends TiUIView {
 			extendedEditText.setText(text);
 			extendedEditText.setSelection(text.length());
 		}
-		
+
 		if (options.containsKey("hasFocus")) {
 			textFieldBoxes.setHasFocus(options.getBoolean("hasFocus"));
 		}
-		
+
 		if (options.containsKey("hintText")) {
 			textFieldBoxes.setLabelText(options.getString("hintText"));
 		}
@@ -168,7 +160,7 @@ public class TextFieldBoxesView extends TiUIView {
 		if (options.containsKey("helperText")) {
 			textFieldBoxes.setHelperText(options.getString("helperText"));
 		}
-		
+
 		if (options.containsKey("helperTextColor")) {
 			textFieldBoxes.setHelperTextColor(Color.parseColor(options.getString("helperTextColor")));
 		}
@@ -180,7 +172,7 @@ public class TextFieldBoxesView extends TiUIView {
 		if (options.containsKey("minCharacters")) {
 			textFieldBoxes.setMinCharacters(options.getInt("minCharacters"));
 		}
-		
+
 		if (options.containsKey("alwaysShowHint")) {
 			textFieldBoxes.setHasClearButton(options.getBoolean("alwaysShowHint"));
 		}
@@ -220,9 +212,13 @@ public class TextFieldBoxesView extends TiUIView {
 		if (options.containsKey("isResponsiveIconColor")) {
 			setIsResponsiveIconColor(options.getBoolean("isResponsiveIconColor"));
 		}
-		
+
 		if (options.containsKey("maxLength")) {
 			setMaxLength(options.getInt("maxLength"));
+		}
+		
+		if (options.containsKey("keyboardType")) {
+			extendedEditText.setInputType(options.getInt("keyboardType"));
 		}
 	}
 
@@ -251,16 +247,19 @@ public class TextFieldBoxesView extends TiUIView {
 			extendedEditText.setSuffixTextColor(Color.parseColor("#bdbdbd"));
 			extendedEditText.setPrefixTextColor(Color.parseColor("#bdbdbd"));
 			extendedEditText.setTextColor(Color.parseColor("#fafafa"));
-
 		}
+	}
+	
+	public void setKeyboardType(int keyboardType) {
+		extendedEditText.setInputType(keyboardType);
 	}
 
 	public void setIconSignifier(String iconSignifier) {
 		int endIconId = appContext.getResources().getIdentifier(iconSignifier, "drawable", appContext.getPackageName());
 		textFieldBoxes.setEndIcon(endIconId);
 	}
-	
-	public void setIsResponsiveIconColor(Boolean isResponsiveIconColor){
+
+	public void setIsResponsiveIconColor(Boolean isResponsiveIconColor) {
 		textFieldBoxes.setIsResponsiveIconColor(isResponsiveIconColor);
 	}
 
@@ -269,8 +268,8 @@ public class TextFieldBoxesView extends TiUIView {
 		int endIconId = appContext.getResources().getIdentifier(endIcon, "drawable", appContext.getPackageName());
 		textFieldBoxes.setEndIcon(endIconId);
 	}
-	
-	public void setMaxLength(int lentgh){
+
+	public void setMaxLength(int lentgh) {
 		InputFilter[] filterArray = new InputFilter[1];
 		filterArray[0] = new InputFilter.LengthFilter(lentgh);
 		extendedEditText.setFilters(filterArray);

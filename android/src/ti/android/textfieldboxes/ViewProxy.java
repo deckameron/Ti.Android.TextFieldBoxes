@@ -57,7 +57,7 @@ public class ViewProxy extends TiViewProxy
 		if(hintText instanceof String){
 			textFieldBoxesView.textFieldBoxes.setLabelText(hintText);
 		} else {
-			Log.e(LCAT, "setHintText should receive only strings");
+			Log.e(LCAT, "setHintText should receive strings");
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class ViewProxy extends TiViewProxy
 		if(alwaysShowHint instanceof Boolean){
 			textFieldBoxesView.textFieldBoxes.setAlwaysShowHint(alwaysShowHint);
 		} else {
-			Log.e(LCAT, "setAlwaysShowHint should receive only Boolean");
+			Log.e(LCAT, "setAlwaysShowHint should receive Boolean");
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class ViewProxy extends TiViewProxy
 		if(hasFocus instanceof Boolean){
 			textFieldBoxesView.textFieldBoxes.setHasFocus(hasFocus);
 		} else {
-			Log.e(LCAT, "setHasFocus should receive only Boolean");
+			Log.e(LCAT, "setHasFocus should receive Boolean");
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class ViewProxy extends TiViewProxy
 		if(textColor instanceof String){
 			textFieldBoxesView.extendedEditText.setTextColor(Color.parseColor(textColor));
 		} else {
-			Log.e(LCAT, "setTextColor should receive only color strings. Ex: \"#212121\"");
+			Log.e(LCAT, "setTextColor should receive color strings. Ex: \"#212121\"");
 		}
 	}
 	
@@ -98,7 +98,7 @@ public class ViewProxy extends TiViewProxy
 		if(counterTextColor instanceof String){
 			textFieldBoxesView.textFieldBoxes.setCounterTextColor(Color.parseColor(counterTextColor));
 		} else {
-			Log.e(LCAT, "setCounterTextColor should receive only color strings. Ex: \"#424242\"");
+			Log.e(LCAT, "setCounterTextColor should receive color strings. Ex: \"#424242\"");
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class ViewProxy extends TiViewProxy
 		if(errorMessage instanceof String){
 			textFieldBoxesView.textFieldBoxes.setError(errorMessage, giveFocus);
 		} else {
-			Log.e(LCAT, "setError should receive only strings for errorMessage and Boolean for giveFocus");
+			Log.e(LCAT, "setError should receive strings for errorMessage and Boolean for giveFocus");
 		}
 	}
 	
@@ -118,7 +118,7 @@ public class ViewProxy extends TiViewProxy
 		if(errorColor instanceof String){
 			textFieldBoxesView.textFieldBoxes.setErrorColor(Color.parseColor(errorColor));
 		} else {
-			Log.e(LCAT, "setErrorColor should receive only color strings. Ex: \"#F44336\"");
+			Log.e(LCAT, "setErrorColor should receive color strings. Ex: \"#F44336\"");
 		}
 	}
 	
@@ -128,7 +128,7 @@ public class ViewProxy extends TiViewProxy
 		if(primaryColor instanceof String){
 			textFieldBoxesView.textFieldBoxes.setPrimaryColor(Color.parseColor(primaryColor));
 		} else {
-			Log.e(LCAT, "setPrimaryColor should receive only color strings. Ex: \"#673AB7\"");
+			Log.e(LCAT, "setPrimaryColor should receive color strings. Ex: \"#673AB7\"");
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class ViewProxy extends TiViewProxy
 		if(secondaryColor instanceof String){
 			textFieldBoxesView.textFieldBoxes.setSecondaryColor(Color.parseColor(secondaryColor));
 		} else {
-			Log.e(LCAT, "setSecondaryColor should receive only color strings. Ex: \"#B39DDB\"");
+			Log.e(LCAT, "setSecondaryColor should receive color strings. Ex: \"#B39DDB\"");
 		}
 	}
 	
@@ -148,7 +148,7 @@ public class ViewProxy extends TiViewProxy
 		if(panelBackgroundColor instanceof String){
 			textFieldBoxesView.textFieldBoxes.setPanelBackgroundColor(Color.parseColor(panelBackgroundColor));
 		} else {
-			Log.e(LCAT, "setPanelBackgroundColor should receive only color strings. Ex: \"#E0E0E0\"");
+			Log.e(LCAT, "setPanelBackgroundColor should receive color strings. Ex: \"#E0E0E0\"");
 		}
 	}
 	
@@ -158,7 +158,7 @@ public class ViewProxy extends TiViewProxy
 		if(useDenseSpacing instanceof Boolean){
 			textFieldBoxesView.textFieldBoxes.setUseDenseSpacing(useDenseSpacing);
 		} else {
-			Log.e(LCAT, "setUseDenseSpacing should receive only booleans");
+			Log.e(LCAT, "setUseDenseSpacing should receive booleans");
 		}
 	}
 	
@@ -168,7 +168,7 @@ public class ViewProxy extends TiViewProxy
 		if(hasClearButton instanceof Boolean){
 			textFieldBoxesView.textFieldBoxes.setHasClearButton(hasClearButton);
 		} else {
-			Log.e(LCAT, "setHasClearButton should receive only booleans");
+			Log.e(LCAT, "setHasClearButton should receive booleans");
 		}
 	}
 	
@@ -178,7 +178,7 @@ public class ViewProxy extends TiViewProxy
 		if(helperText instanceof String){
 			textFieldBoxesView.textFieldBoxes.setHelperText(helperText);
 		} else {
-			Log.e(LCAT, "setHelperText should receive only strings");
+			Log.e(LCAT, "setHelperText should receive strings");
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class ViewProxy extends TiViewProxy
 		if(minCharacters == (int) minCharacters){
 			textFieldBoxesView.textFieldBoxes.setMinCharacters(minCharacters);
 		} else {
-			Log.e(LCAT, "setMinCharacters should receive only int");
+			Log.e(LCAT, "setMinCharacters should receive int");
 		}
 	}
 	
@@ -198,7 +198,7 @@ public class ViewProxy extends TiViewProxy
 		if(maxCharacters == (int) maxCharacters){
 			textFieldBoxesView.textFieldBoxes.setMaxCharacters(maxCharacters);
 		} else {
-			Log.e(LCAT, "setMaxCharacters should receive only int");
+			Log.e(LCAT, "setMaxCharacters should receive int");
 		}
 	}
 	
@@ -220,7 +220,7 @@ public class ViewProxy extends TiViewProxy
 		if(suffixText instanceof String){
 			textFieldBoxesView.extendedEditText.setSuffix(suffixText);
 		} else {
-			Log.e(LCAT, "setSuffixText should receive only string");
+			Log.e(LCAT, "setSuffixText should receive string");
 		}
 	}
 	
@@ -230,7 +230,7 @@ public class ViewProxy extends TiViewProxy
 		if(suffixTextColor instanceof String){
 			textFieldBoxesView.extendedEditText.setSuffixTextColor(Color.parseColor(suffixTextColor));
 		} else {
-			Log.e(LCAT, "setSuffixTextColor should receive only color strings. Ex: \"#757575\"");
+			Log.e(LCAT, "setSuffixTextColor should receive color strings. Ex: \"#757575\"");
 		}
 	}
 	
@@ -240,7 +240,7 @@ public class ViewProxy extends TiViewProxy
 		if(prefixText instanceof String){
 			textFieldBoxesView.extendedEditText.setPrefix(prefixText);
 		} else {
-			Log.e(LCAT, "setPrefixText should receive only int");
+			Log.e(LCAT, "setPrefixText should receive int");
 		}
 	}
 	
@@ -250,7 +250,7 @@ public class ViewProxy extends TiViewProxy
 		if(prefixTextColor instanceof String){
 			textFieldBoxesView.extendedEditText.setPrefixTextColor(Color.parseColor(prefixTextColor));
 		} else {
-			Log.e(LCAT, "setPrefixTextColor should receive only color strings. Ex: \"#757575\"");
+			Log.e(LCAT, "setPrefixTextColor should receive color strings. Ex: \"#757575\"");
 		}
 	}
 	
@@ -263,7 +263,7 @@ public class ViewProxy extends TiViewProxy
 				textFieldBoxesView.extendedEditText.setSelection(text.length());
 			}
 		} else {
-			Log.e(LCAT, "setText should receive only strings.");
+			Log.e(LCAT, "setText should receive strings.");
 		}
 	}
 	
@@ -273,7 +273,7 @@ public class ViewProxy extends TiViewProxy
 		if(selection == (int) selection){
 			textFieldBoxesView.extendedEditText.setSelection(selection);
 		} else {
-			Log.e(LCAT, "setSelection should receive only int");
+			Log.e(LCAT, "setSelection should receive int");
 		}
 	}
 	
@@ -313,7 +313,17 @@ public class ViewProxy extends TiViewProxy
 		if(length == (int) length){
 			textFieldBoxesView.setMaxLength(length);
 		} else {
-			Log.e(LCAT, "setSelection should receive only int");
+			Log.e(LCAT, "setSelection should receive int");
+		}
+	}
+	
+	@Kroll.setProperty @Kroll.method
+	public void setKeyboardType(int keyboardType)
+	{
+		if(keyboardType == (int) keyboardType){
+			textFieldBoxesView.extendedEditText.setInputType(keyboardType);
+		} else {
+			Log.e(LCAT, "keyboardType should receive int");
 		}
 	}
 }

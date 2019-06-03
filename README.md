@@ -355,6 +355,7 @@ var TFBoxes = TextFieldBoxes.createView({
 | `alwaysShowHint` | Whether the label is fixed at top when there's a hint in the EditText | `False` |
 | `useDenseSpacing` | Whether the field uses a dense spacing between its elements | `False` |
 | `manualValidateError` | Whether to validate error state only when `validate()` is called | `False` |
+| `keyboardType` | The type of Keyboard you want the view to use | `Titanium.UI.KEYBOARD_TYPE_DEFAULT` |
 
 #### <a id="masks"/>  14. Masks
 
