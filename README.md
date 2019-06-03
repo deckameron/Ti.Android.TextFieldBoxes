@@ -37,7 +37,7 @@ Download the Ti.Android.TextFieldBoxes module  [here](https://github.com/deckame
 
 #### <a id="basic"/>  1. Basic
 
-Add `studio.carbonylgroup.textfieldboxes.TextFieldBoxes` that contains a `studio.carbonylgroup.textfieldboxes.ExtendedEditText` to your layout:
+Add `TextFieldBoxes` that contains a `ExtendedEditText` to your layout:
 
 ```javascript
 ...
